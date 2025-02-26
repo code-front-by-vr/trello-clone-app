@@ -7,5 +7,280 @@
     <script type="module" src="/src/main.js"></script>
     <title>Trello Clone</title>
   </head>
-  <body></body>
+  <body class="bg-linear-to-r from-purple-200 via-violet-400 to-indigo-600">
+    <header class="p-3 bg-[#674b95]">
+      <div class="font-sans flex justify-between align-middle w-5/6 m-auto">
+        <h1 class="text-2xl font-bold text-white">Trello</h1>
+        <div>Date</div>
+      </div>
+    </header>
+    <main class="p-8">
+      <div class="container w-4/5 m-auto flex items-start gap-10">
+        <!-- Todo column -->
+        <div class="todo column-style bg-emerald-200">
+          <div class="todo-header flex justify-between px-6 mb-3 text-gray-700">
+            <div class="">TODO:</div>
+            <div class="">2</div>
+          </div>
+          <div class="todo-body space-y-4">
+            <div class="card bg-white rounded-lg">
+              <div class="card-btns flex py-4 justify-around" role="group">
+                <button type="button" class="card-btn">Edit</button>
+                <select id="status" class="select-status">
+                  <option selected value="todo">Todo</option>
+                  <option value="in-progress">In progress</option>
+                  <option value="done">Done</option>
+                </select>
+                <button type="button" class="card-btn">Delete</button>
+              </div>
+              <div class="card-body w-full px-4 mb-2">
+                <h3 class="card-title mb-2 text-lg text-gray-800">
+                  Be a senior development
+                </h3>
+                <div class="card-description text-base text-gray-800">
+                  Finish this course
+                </div>
+              </div>
+              <div
+                class="card-footer p-4 flex justify-between text-base text-gray-800"
+              >
+                <div class="card-assign-user">Vika</div>
+                <div class="card-created-at">24.02.2025</div>
+              </div>
+            </div>
+
+            <div class="card bg-white rounded-lg">
+              <div class="card-btns flex py-4 justify-around" role="group">
+                <button type="button" class="card-btn">Edit</button>
+                <select id="status" class="select-status">
+                  <option selected value="todo">Todo</option>
+                  <option value="in-progress">In progress</option>
+                  <option value="done">Done</option>
+                </select>
+                <button type="button" class="card-btn">Delete</button>
+              </div>
+              <div class="card-body w-full px-4 mb-2">
+                <h3 class="card-title mb-2 text-lg text-gray-800">
+                  Master JS as God
+                </h3>
+                <div class="card-description text-base text-gray-800">
+                  Finish this course
+                </div>
+              </div>
+              <div
+                class="card-footer p-4 flex justify-between text-base text-gray-800"
+              >
+                <div class="card-assign-user">Vika</div>
+                <div class="card-created-at">24.02.2025</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- In progress column -->
+        <div class="in-progress column-style bg-amber-200">
+          <div
+            class="in-progress-header flex justify-between px-6 mb-3 text-gray-700"
+          >
+            <div>IN PROGRESS:</div>
+            <div></div>
+          </div>
+          <div class="in-progress-body space-y-4"></div>
+        </div>
+        <!-- Done column -->
+        <div class="done column-style bg-indigo-200">
+          <div class="done-header flex justify-between px-6 mb-3 text-gray-700">
+            <div>DONE:</div>
+            <div></div>
+          </div>
+          <div class="done-body space-y-4"></div>
+          <div class="done-footer">
+            <button
+              type="button"
+              class="block w-1/2 m-auto text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-3 text-center"
+            >
+              Delete all
+            </button>
+          </div>
+        </div>
+
+        <!-- !MODAL ADD TODO  -->
+        <button
+          class="block fixed bottom-10 right-10 text-gray-700 bg-gradient-to-r from-teal-200 to-lime-200 hover:bg-gradient-to-l hover:from-teal-200 hover:to-lime-200 focus:ring-4 focus:outline-none focus:ring-lime-200 font-medium rounded-lg text-lg px-5 py-3 text-center"
+          type="button"
+        >
+          Add card
+        </button>
+
+        <!-- TODO: change class from hidden to flex when it's opened -->
+        <div
+          id="crud-modal"
+          tabindex="-1"
+          aria-hidden="true"
+          class="fixed inset-0 z-50 justify-center items-center w-full bg-gray-900/50 hidden"
+        >
+          <div class="relative p-4 w-full max-w-md">
+            <!-- Modal content -->
+            <div class="relative bg-white rounded-lg shadow-sm">
+              <!-- Modal header -->
+              <button
+                type="button"
+                class="absolute top-2 right-2 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 flex items-center justify-center"
+              >
+                <svg
+                  class="w-3 h-3"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 14 14"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+                  />
+                </svg>
+              </button>
+
+              <!-- Modal body -->
+              <form class="p-6">
+                <div class="flex gap-4 mb-6 flex-col">
+                  <div class="">
+                    <label
+                      for="title"
+                      class="block mb-2 text-sm font-medium text-gray-900"
+                      >Title</label
+                    >
+                    <input
+                      type="text"
+                      name="title"
+                      id="title"
+                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                      placeholder="Enter todo..."
+                      required=""
+                    />
+                  </div>
+                  <div class="">
+                    <label
+                      for="description"
+                      class="block mb-2 text-sm font-medium text-gray-900"
+                      >Description</label
+                    >
+                    <textarea
+                      id="description"
+                      rows="4"
+                      class="block p-2.5 w-full resize-none text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                      placeholder="Write description here"
+                      required
+                    ></textarea>
+                  </div>
+                  <div class="">
+                    <label
+                      for="assign-user"
+                      class="block mb-2 text-sm font-medium text-gray-900"
+                      >User</label
+                    >
+                    <select
+                      id="assign-user"
+                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
+                    >
+                      <option selected="">--Choose user--</option>
+                      <option value="Adam">Adam</option>
+                      <option value="Jane">Jane</option>
+                      <option value="Kate">Kate</option>
+                      <option value="Mike">Mike</option>
+                    </select>
+                  </div>
+                </div>
+                <button
+                  type="submit"
+                  class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                >
+                  <svg
+                    class="me-1 -ms-1 w-5 h-5"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                      clip-rule="evenodd"
+                    ></path>
+                  </svg>
+                  Add new todo
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- !MODAL DELETE ALL -->
+        <!-- TODO: change hidden to flex when it's opened -->
+        <div
+          id="delete-all-modal"
+          tabindex="-1"
+          class="fixed inset-0 z-50 justify-center items-center w-full bg-gray-900/50 hidden"
+        >
+          <div class="relative p-4 w-full max-w-md max-h-full">
+            <div class="relative bg-white rounded-lg shadow-sm">
+              <button
+                type="button"
+                class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
+              >
+                <svg
+                  class="w-3 h-3"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 14 14"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+                  />
+                </svg>
+              </button>
+              <div class="p-4 text-center">
+                <svg
+                  class="mx-auto mb-4 text-gray-400 w-12 h-12"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                  />
+                </svg>
+                <h3 class="mb-5 text-lg font-normal text-gray-500">
+                  Are you sure you want to delete all tasks?
+                </h3>
+                <button
+                  type="button"
+                  class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center"
+                >
+                  Yes, I'm sure
+                </button>
+                <button
+                  type="button"
+                  class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100"
+                >
+                  No, cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
 </html>
