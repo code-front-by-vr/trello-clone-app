@@ -1,7 +1,7 @@
 import { statusArr } from './variables.js'
 
 class Todo {
-    id = crypto.randomUUID()
+    id = Date.now()
     createdAt = new Date().toString()
     constructor({ title, description, assignUser, status = '0' }) {
         this.title = title

@@ -1,25 +1,25 @@
-import { cruidModalElement } from './variables.js'
+import { cruidModalElement, todoContainerElement, inProgressContainerElement, doneContainerElement } from './variables.js'
 
-function buildTemplateTodo({ title, description, assignUser, createdAt, status }) {
+function buildTemplateTodo({ id, title, description, assignUser, createdAt, status }) {
     const data = prepareDate(createdAt)
     return `
-        <div class="card bg-white rounded-lg">
+        <div data-id="${id}" class="card bg-white rounded-lg">
             <div class="flex py-4 justify-around" role="group">
                 <button type="button" class="card-btn">Edit</button>
-                <select id="status" class="select-status">
+                <select name="status" class="select-status">
                     <option value="todo" ${status == 'todo' ? 'selected' : ''}>Todo</option>
-                    <option value="in-progress" ${status == 'in-progress' ? 'selected' : ''}>In progress</option>
+                    <option value="in-progress" ${status == 'progress' ? 'selected' : ''}>In progress</option>
                     <option value="done" ${status == 'done' ? 'selected' : ''}>Done</option>
                 </select>
-                <button type="button" class="card-btn">Delete</button>
+                <button type="button" class="card-btn" data-role="remove">Delete</button>
             </div>
-            <div class="card-body w-full px-4 mb-2">
-                <h3 class="card-title mb-2 text-lg text-gray-800">${title}</h3>
-                <div class="card-description text-base text-gray-800">${description}</div>
+            <div class="w-full px-4 mb-2">
+                <h3 class="mb-2 text-lg text-gray-800">${title}</h3>
+                <div class="text-base text-gray-800">${description}</div>
             </div>
-            <div class="card-footer p-4 flex justify-between text-base text-gray-800">
-                <div class="card-assign-user">${assignUser}</div>
-                <div class="card-created-at">${data}</div>
+            <div class="p-4 flex justify-between text-base text-gray-800">
+                <div>${assignUser}</div>
+                <div>${data}</div>
             </div>
         </div>
     `
@@ -46,11 +46,14 @@ function toggleModal() {
     }
 }
 
-function render(todos = [], { status }) {
-    const targetColumn = document.querySelector(`#${status}`)
-    targetColumn.innerHTML = ''
-    const html = todos.reduce((acc, todo) => acc + buildTemplateTodo(todo), '')
-    targetColumn.innerHTML = html
+function render(todos = []) {
+    todoContainerElement.innerHTML = ''
+    inProgressContainerElement.innerHTML = ''
+    doneContainerElement.innerHTML = ''
+    todos.forEach((todo) => {
+        const targetColumn = document.querySelector(`#${todo.status}`)
+        targetColumn.insertAdjacentHTML('beforeend', buildTemplateTodo(todo))
+    })
 }
 
 export { buildTemplateTodo, prepareDate, toggleModal, render }

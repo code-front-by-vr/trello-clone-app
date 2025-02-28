@@ -1,5 +1,12 @@
+import { storageKey } from './variables.js'
+
 function getDataFromStorage() {
-    return JSON.parse(localStorage.getItem('todos')) || []
+    const data = localStorage.getItem(storageKey)
+    return data ? JSON.parse(data) : []
 }
 
-export { getDataFromStorage }
+function setDataToStorage(todo) {
+    localStorage.setItem(storageKey, JSON.stringify(todo))
+}
+
+export { getDataFromStorage, setDataToStorage }

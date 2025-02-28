@@ -1,18 +1,20 @@
 import { getDataFromStorage } from './storage.js'
-
+const storageKey = 'todos'
 const todos = getDataFromStorage()
 
+const containerTodoElement = document.querySelector('.container-todo')
 const formElement = document.querySelector('#form')
 const buttonAddTodoElement = document.querySelector('#add-todo-btn')
 const deleteAllButtonElement = document.querySelector('#delete-all-btn')
-// TODO(start): check if it's used, or delete if it isn't
 const todoContainerElement = document.querySelector('#todo')
-const inProgressContainerElement = document.querySelector('#in-progress')
+const inProgressContainerElement = document.querySelector('#progress')
 const doneContainerElement = document.querySelector('#done')
-// TODO(finish)
 const cruidModalElement = document.querySelector('#cruid-modal')
-const statusArr = ['todo', 'in-progress', 'done']
+const statusArr = ['todo', 'progress', 'done']
+
 export {
+    containerTodoElement,
+    storageKey,
     todos,
     formElement,
     buttonAddTodoElement,
