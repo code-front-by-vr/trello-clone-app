@@ -1,4 +1,12 @@
-import { cruidModalElement, todoContainerElement, inProgressContainerElement, doneContainerElement } from './variables.js'
+import {
+    cruidModalElement,
+    todoContainerElement,
+    inProgressContainerElement,
+    doneContainerElement,
+    todoCountElement,
+    inProgressCountElement,
+    doneCountElement,
+} from './variables.js'
 
 function buildTemplateTodo({ id, title, description, assignUser, createdAt, status }) {
     const data = prepareDate(createdAt)
@@ -46,6 +54,15 @@ function toggleModal() {
     }
 }
 
+function countTodosInColumn(todos) {
+    const todoCountArr = todos.filter((todo) => todo.status == 'todo')
+    todoCountElement.textContent = todoCountArr.length
+    const inProgressArr = todos.filter((todo) => todo.status == 'progress')
+    inProgressCountElement.textContent = inProgressArr.length
+    const doneCountArr = todos.filter((todo) => todo.status == 'done')
+    doneCountElement.textContent = doneCountArr.length
+}
+
 function render(todos = []) {
     todoContainerElement.innerHTML = ''
     inProgressContainerElement.innerHTML = ''
@@ -56,4 +73,4 @@ function render(todos = []) {
     })
 }
 
-export { buildTemplateTodo, prepareDate, toggleModal, render }
+export { buildTemplateTodo, prepareDate, toggleModal, render, countTodosInColumn }

@@ -1,6 +1,6 @@
 import { todos, formElement, cruidModalElement } from './variables.js'
 import { Todo } from './model.js'
-import { toggleModal, render } from './helpers.js'
+import { countTodosInColumn, toggleModal, render } from './helpers.js'
 import { setDataToStorage } from './storage.js'
 
 function handleClickButtonAddTodo() {
@@ -21,6 +21,7 @@ function handleSubmitForm(event) {
     todos.push(newTodo)
     setDataToStorage(todos)
     render(todos)
+    countTodosInColumn(todos)
     formElement.reset()
     toggleModal()
 }
@@ -34,6 +35,7 @@ function handleDeleteCard({ target }) {
         todos.splice(removedTodo, 1)
         setDataToStorage(todos)
         render(todos)
+        countTodosInColumn(todos)
     }
 }
 
