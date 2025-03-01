@@ -3,9 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="/src/styles.css" rel="stylesheet" />
-    <script type="module" src="/src/main.js"></script>
     <title>Trello Clone</title>
+    <script type="module" src="/src/main.js"></script>
   </head>
   <body class="bg-linear-to-r from-purple-200 via-violet-400 to-indigo-600">
     <header class="bg-[#674b95] p-3">
@@ -20,36 +19,37 @@
         <div class="column-todo">
           <div class="mb-3 flex justify-between px-6 text-gray-700">
             <div>TODO:</div>
-            <div id="todoCount"></div>
+            <div id="todoCount" data-role="count-cards"></div>
           </div>
-          <div id="todo" class="space-y-4"></div>
+          <div id="todo" data-role="status-column" class="space-y-4"></div>
         </div>
         <!-- In progress column -->
         <div class="column-in-progress">
           <div class="mb-3 flex justify-between px-6 text-gray-700">
             <div>IN PROGRESS:</div>
-            <div id="progressCount"></div>
+            <div id="progressCount" data-role="count-cards"></div>
           </div>
-          <div id="progress" class="space-y-4"></div>
+          <div id="progress" data-role="status-column" class="space-y-4"></div>
         </div>
         <!-- Done column -->
         <div class="column-done">
           <div class="mb-3 flex justify-between px-6 text-gray-700">
             <div>DONE:</div>
-            <div id="doneCount"></div>
+            <div id="doneCount" data-role="count-cards"></div>
           </div>
-          <div id="done" class="space-y-4"></div>
+          <div id="done" data-role="status-column" class="space-y-4"></div>
           <div>
             <button id="delete-all-btn" type="button" class="delete-all-btn">Delete all</button>
           </div>
         </div>
 
-        <!-- !MODAL ADD TODO  -->
+        <!-- MODALS -->
+        <!-- !ADD TODO MODAL-->
         <button id="add-todo-btn" class="add-todo-btn" type="button">Add card</button>
 
         <!-- TODO: change class from hidden to flex when it's opened -->
         <div
-          id="cruid-modal"
+          id="formModal"
           tabindex="-1"
           class="fixed inset-0 z-50 hidden w-full items-center justify-center bg-gray-900/50"
         >
@@ -142,7 +142,7 @@
           </div>
         </div>
 
-        <!-- !MODAL DELETE ALL -->
+        <!-- !DELETE ALL -->
         <!-- TODO: change hidden to flex when it's opened -->
         <div
           id="delete-all-modal"

@@ -1,4 +1,4 @@
-import { todos, formElement, cruidModalElement } from './variables.js'
+import { todos, formElement, formModalElement } from './variables.js'
 import { Todo } from './model.js'
 import { countTodosInColumn, toggleModal, render } from './helpers.js'
 import { setDataToStorage } from './storage.js'
@@ -8,7 +8,7 @@ function handleClickButtonAddTodo() {
 }
 
 function handleClickCloseModal({ target }) {
-    if (target === cruidModalElement || target.dataset.role == 'close') {
+    if (target === formModalElement || target.dataset.role == 'close') {
         toggleModal()
     }
 }
@@ -25,7 +25,21 @@ function handleSubmitForm(event) {
     formElement.reset()
     toggleModal()
 }
-
+function handleChangeSelect({ target }) {
+    const newStatus = target.value
+    const closestElement = target.closest('[data-id]')
+    if (closestElement) {
+        const { id } = closestElement.dataset
+        todos.forEach((todo) => {
+            if (todo.id == id) {
+                todo.status = newStatus
+            }
+        })
+        setDataToStorage(todos)
+        render(todos)
+        countTodosInColumn(todos)
+    }
+}
 function handleDeleteCard({ target }) {
     const { role } = target.dataset
     if (role == 'remove') {
@@ -39,4 +53,10 @@ function handleDeleteCard({ target }) {
     }
 }
 
-export { handleSubmitForm, handleClickButtonAddTodo, handleClickCloseModal, handleDeleteCard }
+export {
+    handleSubmitForm,
+    handleClickButtonAddTodo,
+    handleClickCloseModal,
+    handleChangeSelect,
+    handleDeleteCard
+}

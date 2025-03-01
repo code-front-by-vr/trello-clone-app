@@ -1,5 +1,5 @@
 import {
-    cruidModalElement,
+    formModalElement,
     todoContainerElement,
     inProgressContainerElement,
     doneContainerElement,
@@ -16,7 +16,7 @@ function buildTemplateTodo({ id, title, description, assignUser, createdAt, stat
                 <button type="button" class="card-btn">Edit</button>
                 <select name="status" class="select-status">
                     <option value="todo" ${status == 'todo' ? 'selected' : ''}>Todo</option>
-                    <option value="in-progress" ${status == 'progress' ? 'selected' : ''}>In progress</option>
+                    <option value="progress" ${status == 'progress' ? 'selected' : ''}>In progress</option>
                     <option value="done" ${status == 'done' ? 'selected' : ''}>Done</option>
                 </select>
                 <button type="button" class="card-btn" data-role="remove">Delete</button>
@@ -47,10 +47,10 @@ function prepareDate(date = '') {
 }
 
 function toggleModal() {
-    if (cruidModalElement.classList.contains('hidden')) {
-        cruidModalElement.classList.replace('hidden', 'flex')
+    if (formModalElement.classList.contains('hidden')) {
+        formModalElement.classList.replace('hidden', 'flex')
     } else {
-        cruidModalElement.classList.replace('flex', 'hidden')
+        formModalElement.classList.replace('flex', 'hidden')
     }
 }
 
