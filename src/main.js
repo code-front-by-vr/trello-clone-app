@@ -1,10 +1,28 @@
 import './style.css'
-import { todos, containerTodoElement, formElement, buttonAddTodoElement, formModalElement } from './modules/variables.js'
-import { handleClickButtonAddTodo, handleClickCloseModal, handleSubmitForm, handleChangeSelect, handleDeleteCard } from './modules/handlers.js'
-import { render, countTodosInColumn } from './modules/helpers.js';
+import {
+    todos,
+    containerTodoElement,
+    formElement,
+    deleteAllButtonElement,
+    buttonAddTodoElement,
+    formModalElement
+} from './modules/variables.js'
+import {
+    handleClickButtonDeleteAll,
+    handleClickButtonAddTodo,
+    handleClickCloseModal,
+    handleSubmitForm,
+    handleChangeSelect,
+    handleDeleteCard
+} from './modules/handlers.js'
+import {
+    render,
+    countTodosInColumn
+} from './modules/helpers.js';
 
 formElement.addEventListener('submit', handleSubmitForm)
 buttonAddTodoElement.addEventListener('click', handleClickButtonAddTodo)
+deleteAllButtonElement.addEventListener('click', handleClickButtonDeleteAll)
 formModalElement.addEventListener('click', handleClickCloseModal)
 containerTodoElement.addEventListener('click', handleDeleteCard)
 containerTodoElement.addEventListener('change', handleChangeSelect)

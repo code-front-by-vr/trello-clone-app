@@ -7,9 +7,18 @@ function handleClickButtonAddTodo() {
     toggleModal()
 }
 
+function handleClickButtonDeleteAll() {
+    const newTodos = todos.filter((todo) => !(todo.status == 'done'))
+    todos.length = 0
+    setDataToStorage(newTodos)
+    render(newTodos)
+    countTodosInColumn(newTodos)
+}
+
 function handleClickCloseModal({ target }) {
     if (target === formModalElement || target.dataset.role == 'close') {
         toggleModal()
+        formElement.reset()
     }
 }
 
@@ -56,6 +65,7 @@ function handleDeleteCard({ target }) {
 export {
     handleSubmitForm,
     handleClickButtonAddTodo,
+    handleClickButtonDeleteAll,
     handleClickCloseModal,
     handleChangeSelect,
     handleDeleteCard
