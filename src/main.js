@@ -5,7 +5,8 @@ import {
     formElement,
     deleteAllButtonElement,
     buttonAddTodoElement,
-    formModalElement
+    formModalElement,
+    deleteAllModalElement
 } from './modules/variables.js'
 import {
     handleClickButtonDeleteAll,
@@ -24,6 +25,7 @@ formElement.addEventListener('submit', handleSubmitForm)
 buttonAddTodoElement.addEventListener('click', handleClickButtonAddTodo)
 deleteAllButtonElement.addEventListener('click', handleClickButtonDeleteAll)
 formModalElement.addEventListener('click', handleClickCloseModal)
+deleteAllModalElement.addEventListener('click', handleClickCloseModal)
 containerTodoElement.addEventListener('click', handleDeleteCard)
 containerTodoElement.addEventListener('change', handleChangeSelect)
 

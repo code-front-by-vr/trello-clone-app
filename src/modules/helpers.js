@@ -1,6 +1,6 @@
 import {
-    todos,
     formModalElement,
+    deleteAllModalElement,
     todoContainerElement,
     inProgressContainerElement,
     doneContainerElement,
@@ -13,14 +13,14 @@ function buildTemplateTodo({ id, title, description, assignUser, createdAt, stat
     const data = prepareDate(createdAt)
     return `
         <div data-id="${id}" class="card bg-white rounded-lg">
-            <div class="flex py-4 justify-around" role="group">
-                <button type="button" class="card-btn">Edit</button>
-                <select name="status" class="select-status">
+            <div class="flex py-4 justify-center" role="group">
+                <button type="button" class="card-btns_edit">Edit</button>
+                <select name="status" class="card-btns_select">
                     <option value="todo" ${status == 'todo' ? 'selected' : ''}>Todo</option>
                     <option value="progress" ${status == 'progress' ? 'selected' : ''}>In progress</option>
                     <option value="done" ${status == 'done' ? 'selected' : ''}>Done</option>
                 </select>
-                <button type="button" class="card-btn" data-role="remove">Delete</button>
+                <button type="button" class="card-btns_delete" data-role="remove">Delete</button>
             </div>
             <div class="w-full px-4 mb-2">
                 <h3 class="mb-2 text-lg text-gray-800">${title}</h3>
@@ -47,11 +47,18 @@ function prepareDate(date = '') {
     return new Intl.DateTimeFormat('ru-RU', options).format(dateInstance)
 }
 
-function toggleModal() {
+function toggleFormModal() {
     if (formModalElement.classList.contains('hidden')) {
         formModalElement.classList.replace('hidden', 'flex')
     } else {
         formModalElement.classList.replace('flex', 'hidden')
+    }
+}
+function toggleDeleteAllModal() {
+    if (deleteAllModalElement.classList.contains('hidden')) {
+        deleteAllModalElement.classList.replace('hidden', 'flex')
+    } else {
+        deleteAllModalElement.classList.replace('flex', 'hidden')
     }
 }
 
@@ -72,6 +79,7 @@ function render(todos = []) {
         const targetColumn = document.querySelector(`#${todo.status}`)
         targetColumn.insertAdjacentHTML('beforeend', buildTemplateTodo(todo))
     })
+    countTodosInColumn(todos)
 }
 
-export { buildTemplateTodo, prepareDate, toggleModal, render, countTodosInColumn }
+export { buildTemplateTodo, prepareDate, toggleFormModal, toggleDeleteAllModal, render, countTodosInColumn }

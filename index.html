@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Trello Clone</title>
+    <link href="/src/styles.css" rel="stylesheet" />
     <script type="module" src="/src/main.js"></script>
   </head>
   <body class="bg-linear-to-r from-purple-200 via-violet-400 to-indigo-600">
@@ -24,7 +25,7 @@
           <div id="todo" data-role="status-column" class="space-y-4"></div>
         </div>
         <!-- In progress column -->
-        <div class="column-in-progress">
+        <div class="column-progress">
           <div class="mb-3 flex justify-between px-6 text-gray-700">
             <div>IN PROGRESS:</div>
             <div id="progressCount" data-role="count-cards"></div>
@@ -37,19 +38,19 @@
             <div>DONE:</div>
             <div id="doneCount" data-role="count-cards"></div>
           </div>
-          <div id="done" data-role="status-column" class="space-y-4"></div>
-          <div>
-            <button id="delete-all-btn" type="button" class="delete-all-btn">Delete all</button>
-          </div>
+          <div id="done" data-role="status-column" class="mb-4 space-y-4"></div>
         </div>
-
+        <button id="deleteAllBtn" type="button" class="delete-all-btn">
+          Delete all done cards
+        </button>
         <!-- MODALS -->
         <!-- !ADD TODO MODAL-->
-        <button id="add-todo-btn" class="add-todo-btn" type="button">Add card</button>
+        <button id="addTodoBtn" class="add-todo-btn" type="button" tabindex="1">Add card</button>
 
         <!-- TODO: change class from hidden to flex when it's opened -->
         <div
           id="formModal"
+          data-id="formModal"
           tabindex="-1"
           class="fixed inset-0 z-50 hidden w-full items-center justify-center bg-gray-900/50"
         >
@@ -57,7 +58,12 @@
             <!-- Modal content -->
             <div class="relative rounded-lg bg-white shadow-sm">
               <!-- Modal close button -->
-              <button type="button" data-role="close" class="modal-close-btn">
+              <button
+                type="button"
+                data-role="close-form-modal"
+                class="modal-close-btn"
+                tabindex="-1"
+              >
                 <svg
                   class="pointer-events-none h-3 w-3"
                   aria-hidden="true"
@@ -145,18 +151,19 @@
         <!-- !DELETE ALL -->
         <!-- TODO: change hidden to flex when it's opened -->
         <div
-          id="delete-all-modal"
           tabindex="-1"
+          id="deleteAllModal"
           class="fixed inset-0 z-50 hidden w-full items-center justify-center bg-gray-900/50"
         >
           <div class="relative max-h-full w-full max-w-md p-4">
             <div class="relative rounded-lg bg-white shadow-sm">
               <button
                 type="button"
+                data-role="close-delete-modal"
                 class="absolute end-2.5 top-3 ms-auto inline-flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900"
               >
                 <svg
-                  class="h-3 w-3"
+                  class="pointer-events-noneh-3 w-3"
                   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -193,12 +200,14 @@
                 <button
                   type="button"
                   class="inline-flex items-center rounded-lg bg-red-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-red-800 focus:ring-4 focus:ring-red-300 focus:outline-none"
+                  data-role="confirm-delete"
                 >
                   Yes, I'm sure
                 </button>
                 <button
                   type="button"
                   class="ms-3 rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 focus:outline-none"
+                  data-role="cancel-delete"
                 >
                   No, cancel
                 </button>
