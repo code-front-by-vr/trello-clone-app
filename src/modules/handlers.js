@@ -1,19 +1,27 @@
-import { todos, formElement, formModalElement, deleteAllModalElement } from './variables.js'
+import {
+    todos,
+    formElement,
+    formModalElement,
+    deleteAllModalElement,
+    confirmBtn,
+    cancelBtn,
+    progressLimitModalElement
+} from './variables.js'
 import { Todo } from './model.js'
-import { toggleFormModal, toggleDeleteAllModal, render } from './helpers.js'
+import { toggleModal, render } from './helpers.js'
 import { setDataToStorage } from './storage.js'
 
 function handleClickButtonAddTodo() {
-    toggleFormModal()
+    toggleModal(formModalElement)
 }
 
 function handleClickCloseModal({ target }) {
-    if (target === formModalElement || target.dataset.role == 'close-form-modal') {
-        toggleFormModal()
-        formElement.reset()
-    }
-    if (target === deleteAllModalElement || target.dataset.role == 'close-delete-modal') {
-        toggleDeleteAllModal()
+    const currentModalElement = target.closest('[data-item="modal"]')
+    if (target === currentModalElement || target.dataset.role == 'close-modal' || target.dataset.role == 'accept') {
+        toggleModal(currentModalElement)
+        if (currentModalElement.contains(formElement)) {
+            formElement.reset()
+        }
     }
 }
 
@@ -26,46 +34,51 @@ function handleSubmitForm(event) {
     setDataToStorage(todos)
     render(todos)
     formElement.reset()
-    toggleFormModal()
+    toggleModal(formModalElement)
+}
+
+function handleClickConfirmDeleteAll({ target }) {
+    const { role } = target.dataset
+    if (role === 'confirm-delete') {
+        const newTodos = todos.filter((todo) => todo.status !== 'done')
+        todos.length = 0;
+        todos.push(...newTodos)
+        setDataToStorage(newTodos)
+        render(newTodos)
+        toggleModal(deleteAllModalElement)
+    } else if (role === 'cancel-delete') {
+        toggleModal(deleteAllModalElement)
+    }
+    confirmBtn.removeEventListener('click', handleClickConfirmDeleteAll)
+    cancelBtn.removeEventListener('click', handleClickConfirmDeleteAll)
 }
 
 function handleClickButtonDeleteAll() {
     const hasDoneTask = todos.find((todo) => todo.status == 'done')
     if (!hasDoneTask) return
 
-    toggleDeleteAllModal()
+    toggleModal(deleteAllModalElement)
 
-    const cofirmBtn = document.querySelector('[data-role="confirm-delete"]')
-    const cancelBtn = document.querySelector('[data-role="cancel-delete"]')
-
-    function onConfirm() {
-        const newTodos = todos.filter((todo) => todo.status !== 'done')
-        todos.length = 0;
-        todos.push(...newTodos)
-        setDataToStorage(newTodos)
-        render(newTodos)
-        closeModal()
-    }
-
-    function onCancel() {
-        closeModal()
-    }
-
-    function closeModal() {
-        toggleDeleteAllModal()
-        cofirmBtn.removeEventListener('click', onConfirm)
-        cancelBtn.removeEventListener('click', onCancel)
-    }
-
-    cofirmBtn.addEventListener('click', onConfirm)
-    cancelBtn.addEventListener('click', onCancel)
+    confirmBtn.addEventListener('click', handleClickConfirmDeleteAll);
+    cancelBtn.addEventListener('click', handleClickConfirmDeleteAll);
 }
-
-
 
 function handleChangeSelect({ target }) {
     const newStatus = target.value
     const closestElement = target.closest('[data-id]')
+
+    const progressCards = todos.filter((todo) => todo.status == 'progress').length
+
+    if ((newStatus == 'progress') && progressCards >= 6) {
+        toggleModal(progressLimitModalElement)
+
+        const { id } = closestElement.dataset
+        const currentTodo = todos.find(todo => todo.id == id)
+        target.value = currentTodo.status
+
+        return
+    }
+
     if (closestElement) {
         const { id } = closestElement.dataset
         todos.forEach((todo) => {
@@ -96,6 +109,7 @@ export {
     handleSubmitForm,
     handleClickButtonAddTodo,
     handleClickButtonDeleteAll,
+    handleClickConfirmDeleteAll,
     handleClickCloseModal,
     handleChangeSelect,
     handleDeleteCard

@@ -6,7 +6,8 @@ import {
     deleteAllButtonElement,
     buttonAddTodoElement,
     formModalElement,
-    deleteAllModalElement
+    deleteAllModalElement,
+    progressLimitModalElement
 } from './modules/variables.js'
 import {
     handleClickButtonDeleteAll,
@@ -18,14 +19,19 @@ import {
 } from './modules/handlers.js'
 import {
     render,
-    countTodosInColumn
+    countTodosInColumn,
+
 } from './modules/helpers.js';
 
 formElement.addEventListener('submit', handleSubmitForm)
 buttonAddTodoElement.addEventListener('click', handleClickButtonAddTodo)
 deleteAllButtonElement.addEventListener('click', handleClickButtonDeleteAll)
-formModalElement.addEventListener('click', handleClickCloseModal)
-deleteAllModalElement.addEventListener('click', handleClickCloseModal)
+//
+// formModalElement.addEventListener('click', handleClickCloseModal)
+// deleteAllModalElement.addEventListener('click', handleClickCloseModal)
+// progressLimitModalElement.addEventListener('click', handleClickCloseModal)
+//
+containerTodoElement.addEventListener('click', handleClickCloseModal)
 containerTodoElement.addEventListener('click', handleDeleteCard)
 containerTodoElement.addEventListener('change', handleChangeSelect)
 

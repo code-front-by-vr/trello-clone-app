@@ -4,14 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Trello Clone</title>
-    <link href="/src/styles.css" rel="stylesheet" />
+    <!-- <link href="/src/styles.css" rel="stylesheet" /> -->
     <script type="module" src="/src/main.js"></script>
   </head>
   <body class="bg-linear-to-r from-purple-200 via-violet-400 to-indigo-600">
     <header class="bg-[#674b95] p-3">
       <div class="m-auto flex w-5/6 justify-between align-middle font-sans">
         <h1 class="text-2xl font-bold text-white">Trello</h1>
-        <div>Date</div>
+        <div id="clock" class="text-lg font-semibold text-white">Date</div>
       </div>
     </header>
     <main class="p-8">
@@ -43,27 +43,22 @@
         <button id="deleteAllBtn" type="button" class="delete-all-btn">
           Delete all done cards
         </button>
-        <!-- MODALS -->
+
         <!-- !ADD TODO MODAL-->
         <button id="addTodoBtn" class="add-todo-btn" type="button" tabindex="1">Add card</button>
-
-        <!-- TODO: change class from hidden to flex when it's opened -->
+        <!-- Modal overlay -->
         <div
           id="formModal"
           data-id="formModal"
+          data-item="modal"
           tabindex="-1"
           class="fixed inset-0 z-50 hidden w-full items-center justify-center bg-gray-900/50"
         >
+          <!-- Modal content -->
           <div class="relative w-full max-w-md p-4">
-            <!-- Modal content -->
             <div class="relative rounded-lg bg-white shadow-sm">
               <!-- Modal close button -->
-              <button
-                type="button"
-                data-role="close-form-modal"
-                class="modal-close-btn"
-                tabindex="-1"
-              >
+              <button type="button" data-role="close-modal" class="modal-close-btn" tabindex="-1">
                 <svg
                   class="pointer-events-none h-3 w-3"
                   aria-hidden="true"
@@ -148,22 +143,25 @@
           </div>
         </div>
 
-        <!-- !DELETE ALL -->
-        <!-- TODO: change hidden to flex when it's opened -->
+        <!-- !DELETE ALL MODAL-->
+        <!-- Modal overlay -->
         <div
           tabindex="-1"
           id="deleteAllModal"
+          data-item="modal"
           class="fixed inset-0 z-50 hidden w-full items-center justify-center bg-gray-900/50"
         >
+          <!-- Modal content  -->
           <div class="relative max-h-full w-full max-w-md p-4">
             <div class="relative rounded-lg bg-white shadow-sm">
+              <!-- Modal close button -->
               <button
                 type="button"
-                data-role="close-delete-modal"
+                data-role="close-modal"
                 class="absolute end-2.5 top-3 ms-auto inline-flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900"
               >
                 <svg
-                  class="pointer-events-noneh-3 w-3"
+                  class="pointer-events-none h-3 w-3"
                   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -178,6 +176,7 @@
                   />
                 </svg>
               </button>
+              <!-- Modal body -->
               <div class="p-4 text-center">
                 <svg
                   class="mx-auto mb-4 h-12 w-12 text-gray-400"
@@ -210,6 +209,63 @@
                   data-role="cancel-delete"
                 >
                   No, cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- !Overload of In-progress Column Modal -->
+        <div
+          id="progressLimitModal"
+          tabindex="-1"
+          class="fixed inset-0 z-50 hidden w-full items-center justify-center bg-gray-900/50"
+          data-item="modal"
+        >
+          <div class="relative max-h-full w-full max-w-md">
+            <!-- Modal content -->
+            <div class="relative rounded-lg bg-white shadow-sm">
+              <!-- Modal header -->
+              <div
+                class="flex items-center justify-between rounded-t border-b border-gray-200 p-4 md:p-5"
+              >
+                <h3 class="text-xl font-medium text-gray-900">Слишком много задач в работе!</h3>
+                <button
+                  type="button"
+                  class="ms-auto inline-flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900"
+                  data-role="close-modal"
+                >
+                  <svg
+                    class="pointer-events-none h-3 w-3"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 14 14"
+                  >
+                    <path
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+                    />
+                  </svg>
+                </button>
+              </div>
+              <!-- Modal body -->
+              <div class="space-y-4 p-4 md:p-5">
+                <p class="text-base leading-relaxed text-gray-500">
+                  У вас уже 6 задач в работе. Завершите предыдущие задачи, чтобы добавить новые
+                </p>
+              </div>
+              <!-- Modal footer -->
+              <div class="flex items-center rounded-b border-t border-gray-200 p-4 md:p-5">
+                <button
+                  data-role="accept"
+                  type="button"
+                  class="rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 focus:outline-none"
+                >
+                  Понятно
                 </button>
               </div>
             </div>

@@ -1,6 +1,5 @@
 import {
-    formModalElement,
-    deleteAllModalElement,
+    clockElement,
     todoContainerElement,
     inProgressContainerElement,
     doneContainerElement,
@@ -47,18 +46,11 @@ function prepareDate(date = '') {
     return new Intl.DateTimeFormat('ru-RU', options).format(dateInstance)
 }
 
-function toggleFormModal() {
-    if (formModalElement.classList.contains('hidden')) {
-        formModalElement.classList.replace('hidden', 'flex')
+function toggleModal(modalElement) {
+    if (modalElement.classList.contains('hidden')) {
+        modalElement.classList.replace('hidden', 'flex')
     } else {
-        formModalElement.classList.replace('flex', 'hidden')
-    }
-}
-function toggleDeleteAllModal() {
-    if (deleteAllModalElement.classList.contains('hidden')) {
-        deleteAllModalElement.classList.replace('hidden', 'flex')
-    } else {
-        deleteAllModalElement.classList.replace('flex', 'hidden')
+        modalElement.classList.replace('flex', 'hidden')
     }
 }
 
@@ -80,6 +72,16 @@ function render(todos = []) {
         targetColumn.insertAdjacentHTML('beforeend', buildTemplateTodo(todo))
     })
     countTodosInColumn(todos)
+    displayClock()
 }
-
-export { buildTemplateTodo, prepareDate, toggleFormModal, toggleDeleteAllModal, render, countTodosInColumn }
+function displayClock() {
+    clockElement.textContent = new Date().toLocaleTimeString()
+    setInterval(displayClock, 1000)
+}
+export {
+    buildTemplateTodo,
+    prepareDate,
+    toggleModal,
+    render,
+    countTodosInColumn
+}
