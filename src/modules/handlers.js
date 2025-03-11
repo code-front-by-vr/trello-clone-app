@@ -8,11 +8,12 @@ import {
     progressLimitModalElement
 } from './variables.js'
 import { Todo } from './model.js'
-import { toggleModal, render } from './helpers.js'
+import { toggleModal, render, buildFormModal } from './helpers.js'
 import { setDataToStorage } from './storage.js'
 
 function handleClickButtonAddTodo() {
     toggleModal(formModalElement)
+    formElement.innerHTML = buildFormModal()
 }
 
 function handleClickCloseModal({ target }) {
@@ -27,14 +28,45 @@ function handleClickCloseModal({ target }) {
 
 function handleSubmitForm(event) {
     event.preventDefault()
-    const formData = new FormData(event.currentTarget)
+
+    const formData = new FormData(event.target)
     const formDataObject = Object.fromEntries(formData)
-    const newTodo = new Todo(formDataObject)
-    todos.push(newTodo)
-    setDataToStorage(todos)
-    render(todos)
+
+    const { editedId } = formElement.dataset
+    if (editedId) {
+        const editedTodoIndex = todos.findIndex(todo => todo.id == editedId)
+        todos[editedTodoIndex] = { ...todos[editedTodoIndex], ...formDataObject }
+        setDataToStorage(todos)
+        render(todos)
+    } else {
+        const newTodo = new Todo(formDataObject)
+        todos.push(newTodo)
+        setDataToStorage(todos)
+        render(todos)
+    }
     formElement.reset()
     toggleModal(formModalElement)
+    delete formElement.dataset.editedId;
+}
+
+function handleClickEditTodo({ target }) {
+    if (target.dataset.role !== 'edit') return
+
+    const { id } = target.closest('[data-id]').dataset
+    const currentTodo = todos.find(todo => todo.id == id)
+
+    toggleModal(formModalElement)
+
+    formElement.innerHTML = buildFormModal()
+    const titleInput = formElement.querySelector('[name="title"]');
+    const descriptionInput = formElement.querySelector('[name="description"]');
+    const userSelect = formElement.querySelector('[name="assignUser"]');
+
+    titleInput.value = currentTodo.title;
+    descriptionInput.value = currentTodo.description;
+    userSelect.value = currentTodo.assignUser;
+
+    formElement.dataset.editedId = currentTodo.id
 }
 
 function handleClickConfirmDeleteAll({ target }) {
@@ -110,6 +142,7 @@ export {
     handleClickButtonAddTodo,
     handleClickButtonDeleteAll,
     handleClickConfirmDeleteAll,
+    handleClickEditTodo,
     handleClickCloseModal,
     handleChangeSelect,
     handleDeleteCard

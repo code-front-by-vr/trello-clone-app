@@ -5,35 +5,27 @@ import {
     formElement,
     deleteAllButtonElement,
     buttonAddTodoElement,
-    formModalElement,
-    deleteAllModalElement,
-    progressLimitModalElement
 } from './modules/variables.js'
 import {
     handleClickButtonDeleteAll,
     handleClickButtonAddTodo,
+    handleClickEditTodo,
     handleClickCloseModal,
     handleSubmitForm,
     handleChangeSelect,
     handleDeleteCard
 } from './modules/handlers.js'
 import {
-    render,
-    countTodosInColumn,
-
+    render
 } from './modules/helpers.js';
 
-formElement.addEventListener('submit', handleSubmitForm)
+
 buttonAddTodoElement.addEventListener('click', handleClickButtonAddTodo)
 deleteAllButtonElement.addEventListener('click', handleClickButtonDeleteAll)
-//
-// formModalElement.addEventListener('click', handleClickCloseModal)
-// deleteAllModalElement.addEventListener('click', handleClickCloseModal)
-// progressLimitModalElement.addEventListener('click', handleClickCloseModal)
-//
+containerTodoElement.addEventListener('submit', handleSubmitForm)
 containerTodoElement.addEventListener('click', handleClickCloseModal)
 containerTodoElement.addEventListener('click', handleDeleteCard)
 containerTodoElement.addEventListener('change', handleChangeSelect)
+containerTodoElement.addEventListener('click', handleClickEditTodo)
 
 render(todos)
-countTodosInColumn(todos)
