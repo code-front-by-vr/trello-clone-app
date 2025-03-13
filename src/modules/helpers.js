@@ -6,13 +6,14 @@ import {
     todoCountElement,
     inProgressCountElement,
     doneCountElement,
+    formElement,
 } from './variables.js'
 
 function buildTemplateTodo({ id, title, description, assignUser, createdAt, status }) {
     const data = prepareDate(createdAt)
     return `
-        <div data-id="${id}" class="card bg-white rounded-lg">
-            <div class="flex py-4 justify-center" role="group">
+        <div data-id="${id}" class="card bg-white rounded-2xl shadow-lg p-5 w-full max-w-md border border-gray-200 overflow-hidden">
+            <div class="flex mb-4 justify-center" role="group">
                 <button type="button" class="card-btns_edit" data-role="edit">Edit</button>
                 <select name="status" class="card-btns_select">
                     <option value="todo" ${status == 'todo' ? 'selected' : ''}>Todo</option>
@@ -21,22 +22,24 @@ function buildTemplateTodo({ id, title, description, assignUser, createdAt, stat
                 </select>
                 <button type="button" class="card-btns_delete" data-role="remove">Delete</button>
             </div>
-            <div class="w-full px-4 mb-2">
-                <h3 class="mb-2 text-lg text-gray-800">${title}</h3>
-                <div class="text-base text-gray-800">${description}</div>
+            <div class="mb-4">
+                <h3 class="text-xl font-semibold text-gray-900 truncate">${title}</h3>
+                <div class="text-gray-600 break-words max-w-full overflow-hidden">${description}</div>
             </div>
-            <div class="p-4 flex justify-between text-base text-gray-800">
-                <div>${assignUser}</div>
-                <div>${data}</div>
+            <div class="flex justify-between text-gray-500 text-sm border-t pt-3">
+                <div class="flex items-center gap-2">
+                    <span class="bg-blue-100 text-blue-600 text-xs px-2 py-1 rounded-lg">${assignUser}</span>
+                </div>
+                <div class="text-gray-400">${data}</div>
             </div>
         </div>
     `
 }
 
-function buildFormModal() {
-    return `
+async function buildFormModal(todo = null) {
+    formElement.innerHTML = `
             <div class="mb-6 flex flex-col gap-4">
-                <div class="">
+                <div>
                     <label for="title" class="mb-2 block text-sm font-medium text-gray-900"
                         >Title</label
                     >
@@ -49,7 +52,7 @@ function buildFormModal() {
                         required=""
                     />
                 </div>
-                <div class="">
+                <div>
                     <label for="description" class="mb-2 block text-sm font-medium text-gray-900"
                         >Description</label
                     >
@@ -62,21 +65,17 @@ function buildFormModal() {
                         required
                     ></textarea>
                 </div>
-                <div class="">
-                    <label for="assign-user" class="mb-2 block text-sm font-medium text-gray-900"
+                <div>
+                    <label for="assignUser" class="mb-2 block text-sm font-medium text-gray-900"
                         >User</label
                     >
                     <select
                         name="assignUser"
-                        id="assign-user"
+                        id="assignUser"
                         class="focus:ring-primary-500 focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900"
                         required
                     >
                         <option selected value="">Choose assign user</option>
-                        <option value="Adam">Adam</option>
-                        <option value="Jane">Jane</option>
-                        <option value="Kate">Kate</option>
-                        <option value="Mike">Mike</option>
                     </select>
                 </div>
             </div>
@@ -93,10 +92,26 @@ function buildFormModal() {
                     clip-rule="evenodd"
                 ></path>
                 </svg>
-                Add todo
+                ${todo ? 'Save Changes' : 'Add todo'}
             </button>
     `
+    try {
+        const response = await fetch('https://jsonplaceholder.typicode.com/users/?_limit=5')
+        const users = await response.json()
+        const selectUsers = document.querySelector('#assignUser')
+
+        users.forEach((user) => {
+            const optionUser = document.createElement('option')
+            optionUser.value = user.username
+            optionUser.textContent = user.username
+            selectUsers.append(optionUser)
+        })
+
+    } catch (error) {
+        alert('Что-то пошло не так. Попробуйте еще раз', error)
+    }
 }
+
 function prepareDate(date = '') {
     const dateInstance = new Date(date)
     const options = {
@@ -109,6 +124,7 @@ function prepareDate(date = '') {
 
     return new Intl.DateTimeFormat('ru-RU', options).format(dateInstance)
 }
+
 
 function toggleModal(modalElement) {
     if (modalElement.classList.contains('hidden')) {
@@ -138,10 +154,12 @@ function render(todos = []) {
     countTodosInColumn(todos)
     displayClock()
 }
+
 function displayClock() {
     clockElement.textContent = new Date().toLocaleTimeString()
     setInterval(displayClock, 1000)
 }
+
 export {
     buildTemplateTodo,
     prepareDate,

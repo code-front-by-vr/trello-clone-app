@@ -5,16 +5,13 @@ import {
     deleteAllModalElement,
     confirmBtn,
     cancelBtn,
-    progressLimitModalElement
+    progressLimitModalElement,
+    dropDownMenuButton,
+    dropDownMenu,
 } from './variables.js'
 import { Todo } from './model.js'
 import { toggleModal, render, buildFormModal } from './helpers.js'
 import { setDataToStorage } from './storage.js'
-
-function handleClickButtonAddTodo() {
-    toggleModal(formModalElement)
-    formElement.innerHTML = buildFormModal()
-}
 
 function handleClickCloseModal({ target }) {
     const currentModalElement = target.closest('[data-item="modal"]')
@@ -24,6 +21,22 @@ function handleClickCloseModal({ target }) {
             formElement.reset()
         }
     }
+}
+
+function handleToggleDropdownMenu(event) {
+    event.stopPropagation()
+    dropDownMenu.classList.toggle("hidden")
+}
+
+function handleCloseDropdownMenu({ target }) {
+    if (!dropDownMenu.contains(target)) {
+        dropDownMenu.classList.add("hidden")
+    }
+}
+
+function handleClickButtonAddTodo() {
+    toggleModal(formModalElement)
+    buildFormModal()
 }
 
 function handleSubmitForm(event) {
@@ -49,24 +62,15 @@ function handleSubmitForm(event) {
     delete formElement.dataset.editedId;
 }
 
-function handleClickEditTodo({ target }) {
-    if (target.dataset.role !== 'edit') return
 
-    const { id } = target.closest('[data-id]').dataset
-    const currentTodo = todos.find(todo => todo.id == id)
+function handleClickButtonDeleteAll() {
+    const hasDoneTask = todos.find((todo) => todo.status == 'done')
+    if (!hasDoneTask) return
 
-    toggleModal(formModalElement)
+    toggleModal(deleteAllModalElement)
 
-    formElement.innerHTML = buildFormModal()
-    const titleInput = formElement.querySelector('[name="title"]');
-    const descriptionInput = formElement.querySelector('[name="description"]');
-    const userSelect = formElement.querySelector('[name="assignUser"]');
-
-    titleInput.value = currentTodo.title;
-    descriptionInput.value = currentTodo.description;
-    userSelect.value = currentTodo.assignUser;
-
-    formElement.dataset.editedId = currentTodo.id
+    confirmBtn.addEventListener('click', handleClickConfirmDeleteAll);
+    cancelBtn.addEventListener('click', handleClickConfirmDeleteAll);
 }
 
 function handleClickConfirmDeleteAll({ target }) {
@@ -85,14 +89,24 @@ function handleClickConfirmDeleteAll({ target }) {
     cancelBtn.removeEventListener('click', handleClickConfirmDeleteAll)
 }
 
-function handleClickButtonDeleteAll() {
-    const hasDoneTask = todos.find((todo) => todo.status == 'done')
-    if (!hasDoneTask) return
+async function handleClickEditTodo({ target }) {
+    if (target.dataset.role !== 'edit') return
 
-    toggleModal(deleteAllModalElement)
+    const { id } = target.closest('[data-id]').dataset
+    const currentTodo = todos.find(todo => todo.id == id)
 
-    confirmBtn.addEventListener('click', handleClickConfirmDeleteAll);
-    cancelBtn.addEventListener('click', handleClickConfirmDeleteAll);
+    toggleModal(formModalElement)
+    await buildFormModal(currentTodo)
+
+    const titleInput = formElement.querySelector('[name="title"]');
+    const descriptionInput = formElement.querySelector('[name="description"]');
+    const userSelect = formElement.querySelector('[name="assignUser"]');
+
+    titleInput.value = currentTodo.title;
+    descriptionInput.value = currentTodo.description;
+    userSelect.value = currentTodo.assignUser;
+
+    formElement.dataset.editedId = currentTodo.id
 }
 
 function handleChangeSelect({ target }) {
@@ -138,6 +152,8 @@ function handleDeleteCard({ target }) {
 }
 
 export {
+    handleToggleDropdownMenu,
+    handleCloseDropdownMenu,
     handleSubmitForm,
     handleClickButtonAddTodo,
     handleClickButtonDeleteAll,
