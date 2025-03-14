@@ -1,6 +1,8 @@
 import { getDataFromStorage } from './storage.js'
+
 const storageKey = 'todos'
 const todos = getDataFromStorage()
+
 const clockElement = document.querySelector('#clock')
 const containerTodoElement = document.querySelector('.container')
 const formElement = document.querySelector('#form')

@@ -9,10 +9,10 @@ import {
     formElement,
 } from './variables.js'
 
-function buildTemplateTodo({ id, title, description, assignUser, createdAt, status }) {
+function buildTemplateTodo({ id, title, description, assignUser, createdAt, status, color }) {
     const data = prepareDate(createdAt)
     return `
-        <div data-id="${id}" class="card bg-white rounded-2xl shadow-lg p-5 w-full max-w-md border border-gray-200 overflow-hidden">
+        <div data-id="${id}" class="card bg-${color} rounded-2xl shadow-lg p-5 w-full max-w-md border border-gray-200 overflow-hidden">
             <div class="flex mb-4 justify-center" role="group">
                 <button type="button" class="card-btns_edit" data-role="edit">Edit</button>
                 <select name="status" class="card-btns_select">
@@ -78,7 +78,29 @@ async function buildFormModal(todo = null) {
                         <option selected value="">Choose assign user</option>
                     </select>
                 </div>
+                <div class="mb-4">
+                    <label class="mb-2 block text-sm font-medium text-gray-900">Choose Color</label>
+                    <div class="relative">
+                        <button id="colorDropdownBtn" type="button" class="dropdown-color-btn">
+                            <span id="selectedColorPreview" class="w-full h-full inline-flex"></span>
+                        </button>
+                        <div id="colorDropdown" class="dropdown-color hidden">
+                            <div class="grid grid-cols-4 gap-1">
+                                <button type="button" class="color-btn bg-emerald-100" data-color="emerald-100"></button>
+                                <button type="button" class="color-btn bg-amber-100" data-color="amber-100"></button>
+                                <button type="button" class="color-btn bg-orange-100" data-color="orange-100"></button>
+                                <button type="button" class="color-btn bg-red-100" data-color="red-100"></button>
+                                <button type="button" class="color-btn bg-rose-100" data-color="rose-100"></button>
+                                <button type="button" class="color-btn bg-sky-100" data-color="sky-100"></button>
+                                <button type="button" class="color-btn bg-slate-100" data-color="slate-100"></button>
+                                <button type="button" class="color-btn bg-lime-100" data-color="lime-100"></button>
+                            </div>
+                        </div>
+                        <input type="hidden" name="color" id="selectedColor" value="bg-white">
+                    </div>
+                </div>
             </div>
+
             <button type="submit" class="submit-form-btn">
                 <svg
                 class="-ms-1 me-1 h-5 w-5"
@@ -95,6 +117,11 @@ async function buildFormModal(todo = null) {
                 ${todo ? 'Save Changes' : 'Add todo'}
             </button>
     `
+    await loadUsers()
+    initColorPicker(formElement)
+}
+
+async function loadUsers() {
     try {
         const response = await fetch('https://jsonplaceholder.typicode.com/users/?_limit=5')
         const users = await response.json()
@@ -110,6 +137,27 @@ async function buildFormModal(todo = null) {
     } catch (error) {
         alert('Что-то пошло не так. Попробуйте еще раз', error)
     }
+}
+
+function initColorPicker(form) {
+    const dropdownBtn = form.querySelector('#colorDropdownBtn')
+    const colorPreview = form.querySelector('#selectedColorPreview')
+    const dropdown = form.querySelector('#colorDropdown')
+    const colorBtns = form.querySelectorAll('.color-btn')
+    const hiddenInput = form.querySelector('#selectedColor')
+
+    dropdownBtn.addEventListener('click', () => dropdown.classList.toggle('hidden'))
+
+    colorBtns.forEach((btn) => {
+        btn.addEventListener('click', () => {
+            const selectedColor = btn.dataset.color
+            //reset classes to initial ones
+            colorPreview.className = 'w-full h-full inline-flex'
+            hiddenInput.value = selectedColor
+            colorPreview.classList.add(`bg-${selectedColor}`)
+            dropdown.classList.add('hidden')
+        })
+    })
 }
 
 function prepareDate(date = '') {
@@ -134,15 +182,6 @@ function toggleModal(modalElement) {
     }
 }
 
-function countTodosInColumn(todos) {
-    const todoCountArr = todos.filter((todo) => todo.status == 'todo')
-    todoCountElement.textContent = todoCountArr.length
-    const inProgressArr = todos.filter((todo) => todo.status == 'progress')
-    inProgressCountElement.textContent = inProgressArr.length
-    const doneCountArr = todos.filter((todo) => todo.status == 'done')
-    doneCountElement.textContent = doneCountArr.length
-}
-
 function render(todos = []) {
     todoContainerElement.innerHTML = ''
     inProgressContainerElement.innerHTML = ''
@@ -153,6 +192,15 @@ function render(todos = []) {
     })
     countTodosInColumn(todos)
     displayClock()
+}
+
+function countTodosInColumn(todos) {
+    const todoCountArr = todos.filter((todo) => todo.status == 'todo')
+    todoCountElement.textContent = todoCountArr.length
+    const inProgressArr = todos.filter((todo) => todo.status == 'progress')
+    inProgressCountElement.textContent = inProgressArr.length
+    const doneCountArr = todos.filter((todo) => todo.status == 'done')
+    doneCountElement.textContent = doneCountArr.length
 }
 
 function displayClock() {

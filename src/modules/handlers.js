@@ -6,7 +6,6 @@ import {
     confirmBtn,
     cancelBtn,
     progressLimitModalElement,
-    dropDownMenuButton,
     dropDownMenu,
 } from './variables.js'
 import { Todo } from './model.js'
@@ -35,8 +34,8 @@ function handleCloseDropdownMenu({ target }) {
 }
 
 function handleClickButtonAddTodo() {
-    toggleModal(formModalElement)
     buildFormModal()
+    toggleModal(formModalElement)
 }
 
 function handleSubmitForm(event) {
@@ -98,13 +97,15 @@ async function handleClickEditTodo({ target }) {
     toggleModal(formModalElement)
     await buildFormModal(currentTodo)
 
-    const titleInput = formElement.querySelector('[name="title"]');
-    const descriptionInput = formElement.querySelector('[name="description"]');
-    const userSelect = formElement.querySelector('[name="assignUser"]');
+    const titleInput = formElement.querySelector('input[name="title"]')
+    const descriptionInput = formElement.querySelector('textarea[name="description"]')
+    const userSelect = formElement.querySelector('select[name="assignUser"]')
+    const cardBgColor = form.querySelector('#selectedColorPreview')
 
-    titleInput.value = currentTodo.title;
-    descriptionInput.value = currentTodo.description;
-    userSelect.value = currentTodo.assignUser;
+    titleInput.value = currentTodo.title
+    descriptionInput.value = currentTodo.description
+    userSelect.value = currentTodo.assignUser
+    cardBgColor.classList.add(`bg-${currentTodo.color}`)
 
     formElement.dataset.editedId = currentTodo.id
 }

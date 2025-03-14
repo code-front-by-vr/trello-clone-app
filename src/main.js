@@ -1,5 +1,6 @@
 import './style.css'
 import {
+    todos,
     containerTodoElement,
     deleteAllButtonElement,
     buttonAddTodoElement,
@@ -30,4 +31,4 @@ containerTodoElement.addEventListener('click', handleClickEditTodo)
 dropDownMenuButton.addEventListener('click', handleToggleDropdownMenu)
 document.addEventListener('click', handleCloseDropdownMenu)
 
-render()
+render(todos)
