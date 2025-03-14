@@ -3,7 +3,7 @@
 .column-todo,
 .column-progress,
 .column-done {
-  @apply flex max-h-[78vh] min-w-[200px] flex-shrink-0 flex-col overflow-y-auto rounded-lg border-gray-200 p-3 text-base font-semibold shadow-md sm:min-w-[300px] sm:p-5 md:min-w-[350px] xl:max-h-fit;
+  @apply flex max-h-[80vh] min-w-[200px] flex-shrink-0 flex-col overflow-y-auto rounded-lg border-gray-200 p-3 text-base font-semibold shadow-md sm:min-w-[300px] sm:p-5 md:min-w-[350px] xl:max-h-fit;
 }
 
 .column-todo {
