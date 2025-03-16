@@ -4,11 +4,9 @@ import {
     containerTodoElement,
     deleteAllButtonElement,
     buttonAddTodoElement,
-    dropDownMenuButton,
 } from './modules/variables.js'
 import {
     handleToggleDropdownMenu,
-    handleCloseDropdownMenu,
     handleClickButtonDeleteAll,
     handleClickButtonAddTodo,
     handleClickEditTodo,
@@ -28,7 +26,6 @@ containerTodoElement.addEventListener('click', handleClickCloseModal)
 containerTodoElement.addEventListener('click', handleDeleteCard)
 containerTodoElement.addEventListener('change', handleChangeSelect)
 containerTodoElement.addEventListener('click', handleClickEditTodo)
-dropDownMenuButton.addEventListener('click', handleToggleDropdownMenu)
-document.addEventListener('click', handleCloseDropdownMenu)
+document.addEventListener('click', handleToggleDropdownMenu)
 
 render(todos)

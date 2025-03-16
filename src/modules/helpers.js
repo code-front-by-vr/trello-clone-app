@@ -1,11 +1,7 @@
 import {
     clockElement,
-    todoContainerElement,
-    inProgressContainerElement,
-    doneContainerElement,
-    todoCountElement,
-    inProgressCountElement,
-    doneCountElement,
+    columns,
+    countCards,
     formElement,
 } from './variables.js'
 
@@ -47,9 +43,9 @@ async function buildFormModal(todo = null) {
                         type="text"
                         name="title"
                         id="title"
-                        class="focus:ring-primary-600 focus:border-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900"
+                        class="form-title"
                         placeholder="Enter todo..."
-                        required=""
+                        required
                     />
                 </div>
                 <div>
@@ -60,7 +56,7 @@ async function buildFormModal(todo = null) {
                         name="description"
                         id="description"
                         rows="4"
-                        class="block w-full resize-none rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+                        class="form-description"
                         placeholder="Write description here"
                         required
                     ></textarea>
@@ -72,7 +68,7 @@ async function buildFormModal(todo = null) {
                     <select
                         name="assignUser"
                         id="assignUser"
-                        class="focus:ring-primary-500 focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900"
+                        class="form-assign-user"
                         required
                     >
                         <option selected value="">Choose assign user</option>
@@ -96,7 +92,7 @@ async function buildFormModal(todo = null) {
                                 <button type="button" class="color-btn bg-lime-100" data-color="lime-100"></button>
                             </div>
                         </div>
-                        <input type="hidden" name="color" id="selectedColor" value="bg-white">
+                        <input type="hidden" name="color" id="selectedColor" value="white">
                     </div>
                 </div>
             </div>
@@ -173,34 +169,26 @@ function prepareDate(date = '') {
     return new Intl.DateTimeFormat('ru-RU', options).format(dateInstance)
 }
 
-
 function toggleModal(modalElement) {
-    if (modalElement.classList.contains('hidden')) {
-        modalElement.classList.replace('hidden', 'flex')
-    } else {
-        modalElement.classList.replace('flex', 'hidden')
-    }
+    return modalElement.classList.contains('hidden') ? modalElement.classList.replace('hidden', 'flex') : modalElement.classList.replace('flex', 'hidden')
 }
 
 function render(todos = []) {
-    todoContainerElement.innerHTML = ''
-    inProgressContainerElement.innerHTML = ''
-    doneContainerElement.innerHTML = ''
+    columns.forEach((column) => column.innerHTML = '')
     todos.forEach((todo) => {
         const targetColumn = document.querySelector(`#${todo.status}`)
         targetColumn.insertAdjacentHTML('beforeend', buildTemplateTodo(todo))
     })
-    countTodosInColumn(todos)
+    updateCardsCounter(todos)
     displayClock()
 }
 
-function countTodosInColumn(todos) {
-    const todoCountArr = todos.filter((todo) => todo.status == 'todo')
-    todoCountElement.textContent = todoCountArr.length
-    const inProgressArr = todos.filter((todo) => todo.status == 'progress')
-    inProgressCountElement.textContent = inProgressArr.length
-    const doneCountArr = todos.filter((todo) => todo.status == 'done')
-    doneCountElement.textContent = doneCountArr.length
+function updateCardsCounter(todos) {
+    const counts = { todo: 0, progress: 0, done: 0 }
+    todos.forEach((todo) => counts[todo.status]++)
+    countCards.forEach((counter, index) => {
+        counter.textContent = Object.values(counts)[index]
+    })
 }
 
 function displayClock() {
@@ -213,6 +201,5 @@ export {
     prepareDate,
     toggleModal,
     render,
-    countTodosInColumn,
     buildFormModal
 }
