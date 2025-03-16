@@ -30,18 +30,15 @@
       </div>
     </header>
     <main>
-      <div
-        class="container flex h-[calc(100vh-4rem)] w-full items-start gap-4 overflow-x-auto overflow-y-hidden p-4 sm:p-6 lg:p-8 xl:justify-center xl:overflow-y-auto"
-      >
-        <!-- Todo column -->
-        <div class="column column-todo">
+      <div class="container">
+        <div class="column-todo">
           <div class="mb-3 flex justify-between px-6 text-gray-700">
             <div>TODO:</div>
             <div id="todoCount" data-role="count-cards"></div>
           </div>
           <div id="todo" data-role="status-column" class="space-y-4"></div>
         </div>
-        <!-- In progress column -->
+
         <div class="column-progress">
           <div class="mb-3 flex justify-between px-6 text-gray-700">
             <div>IN PROGRESS:</div>
@@ -49,7 +46,7 @@
           </div>
           <div id="progress" data-role="status-column" class="space-y-4"></div>
         </div>
-        <!-- Done column -->
+
         <div class="column-done">
           <div class="mb-3 flex justify-between px-6 text-gray-700">
             <div>DONE:</div>
@@ -61,11 +58,11 @@
         <!-- Dropdowm menu -->
         <div class="fixed right-8 bottom-8">
           <button
-            id="menuButton"
+            data-role="menuButton"
             class="flex h-14 w-14 items-center justify-center rounded-full border border-gray-300 bg-gray-100 text-gray-700 shadow-md transition hover:bg-gray-200 focus:ring-4 focus:ring-gray-300"
           >
             <svg
-              class="h-8 w-8 transition-transform duration-300"
+              class="pointer-events-none h-8 w-8 transition-transform duration-300"
               id="menuIcon"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -80,9 +77,9 @@
               />
             </svg>
           </button>
-          <!-- DropDown Menu body -->
           <div
             id="dropDownMenu"
+            data-role="dropDownMenu"
             class="absolute right-0 bottom-16 hidden w-52 rounded-xl bg-white shadow-lg transition-transform duration-300"
           >
             <ul class="py-2 text-gray-800">
@@ -135,11 +132,9 @@
         </div>
 
         <!-- !ADD TODO MODAL-->
-        <!-- Modal overlay -->
         <div
           id="formModal"
-          data-id="formModal"
-          data-item="modal"
+          data-item="modal-overlay"
           tabindex="-1"
           class="fixed inset-0 z-50 hidden w-full items-center justify-center bg-gray-900/50"
         >
@@ -169,11 +164,10 @@
         </div>
 
         <!-- !DELETE ALL MODAL-->
-        <!-- Modal overlay -->
         <div
-          tabindex="-1"
           id="deleteAllModal"
-          data-item="modal"
+          data-item="modal-overlay"
+          tabindex="-1"
           class="fixed inset-0 z-50 hidden w-full items-center justify-center bg-gray-900/50"
         >
           <!-- Modal content  -->
@@ -241,9 +235,9 @@
         <!-- !Overflow In-progress Column Modal -->
         <div
           id="progressLimitModal"
+          data-item="modal-overlay"
           tabindex="-1"
           class="fixed inset-0 z-50 hidden w-full items-center justify-center bg-gray-900/50"
-          data-item="modal"
         >
           <div class="relative max-h-full w-full max-w-md">
             <!-- Modal content -->
