@@ -82,7 +82,7 @@ async function buildFormModal(todo = null) {
                         </button>
                         <div id="colorDropdown" class="dropdown-color hidden">
                             <div class="grid grid-cols-4 gap-1">
-                                <button type="button" class="color-btn bg-emerald-100" data-color="emerald-100"></button>
+                                <button type="button" class="color-btn bg-white" data-color="white"></button>
                                 <button type="button" class="color-btn bg-amber-100" data-color="amber-100"></button>
                                 <button type="button" class="color-btn bg-orange-100" data-color="orange-100"></button>
                                 <button type="button" class="color-btn bg-red-100" data-color="red-100"></button>
@@ -145,8 +145,8 @@ function initColorPicker(form) {
     dropdownBtn.addEventListener('click', () => dropdown.classList.toggle('hidden'))
 
     colorBtns.forEach((btn) => {
-        btn.addEventListener('click', () => {
-            const selectedColor = btn.dataset.color
+        btn.addEventListener('click', ({ target }) => {
+            const selectedColor = target.dataset.color
             //reset classes to initial ones
             colorPreview.className = 'w-full h-full inline-flex'
             hiddenInput.value = selectedColor
