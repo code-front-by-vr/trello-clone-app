@@ -5,6 +5,7 @@ import {
     formElement,
 } from './variables.js'
 
+// Create todo card
 function buildTemplateTodo({ id, title, description, assignUser, createdAt, status, color }) {
     const data = prepareDate(createdAt)
     return `
@@ -32,6 +33,7 @@ function buildTemplateTodo({ id, title, description, assignUser, createdAt, stat
     `
 }
 
+// Create form 
 async function buildFormModal(todo = null) {
     formElement.innerHTML = `
             <div class="mb-6 flex flex-col gap-4">
@@ -117,6 +119,7 @@ async function buildFormModal(todo = null) {
     initColorPicker(formElement)
 }
 
+// load users from server
 async function loadUsers() {
     try {
         const response = await fetch('https://jsonplaceholder.typicode.com/users/?_limit=5')
@@ -135,6 +138,7 @@ async function loadUsers() {
     }
 }
 
+// Make color palette for form
 function initColorPicker(form) {
     const dropdownBtn = form.querySelector('#colorDropdownBtn')
     const colorPreview = form.querySelector('#selectedColorPreview')
@@ -149,8 +153,8 @@ function initColorPicker(form) {
             const selectedColor = target.dataset.color
             //reset classes to initial ones
             colorPreview.className = 'w-full h-full inline-flex'
-            hiddenInput.value = selectedColor
             colorPreview.classList.add(`bg-${selectedColor}`)
+            hiddenInput.value = selectedColor
             dropdown.classList.add('hidden')
         })
     })
@@ -168,9 +172,9 @@ function prepareDate(date = '') {
 
     return new Intl.DateTimeFormat('ru-RU', options).format(dateInstance)
 }
-
+// Display or hide current modal
 function toggleModal(modalElement) {
-    return modalElement.classList.contains('hidden') ? modalElement.classList.replace('hidden', 'flex') : modalElement.classList.replace('flex', 'hidden')
+    modalElement.classList.contains('hidden') ? modalElement.classList.replace('hidden', 'flex') : modalElement.classList.replace('flex', 'hidden')
 }
 
 function render(todos = []) {
@@ -182,7 +186,7 @@ function render(todos = []) {
     updateCardsCounter(todos)
     displayClock()
 }
-
+// Calculate amount of cards in each column
 function updateCardsCounter(todos) {
     const counts = { todo: 0, progress: 0, done: 0 }
     todos.forEach((todo) => counts[todo.status]++)
